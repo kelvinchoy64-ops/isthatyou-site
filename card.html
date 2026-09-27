@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>雪櫃提示卡 Fridge card · 係咪你 IsThatYou</title>
+<meta name="description" content="打印貼喺雪櫃：未見綠燈，唔轉錢。Print for the fridge: No green, no money.">
+<link rel="icon" href="assets/favicon.png">
+<style>
+  :root { color-scheme: light; --red: #c81e1e; --red-soft: #fdecec; --green: #15803d; --ink: #0b1324; --muted: #4b5870; --line: #cbd5e1; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #eef2f7; color: var(--ink); font: 18px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", "Noto Sans HK", "Microsoft JhengHei", Roboto, sans-serif; }
+  .bar { position: sticky; top: 0; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; padding: 12px 16px; background: #fff; border-bottom: 1px solid var(--line); z-index: 1; }
+  .bar a, .bar button { font: inherit; font-size: 16px; font-weight: 700; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: #1d4ed8; text-decoration: none; cursor: pointer; }
+  .bar button { background: #1d4ed8; border-color: #1d4ed8; color: #fff; }
+  .card { width: min(100% - 32px, 720px); margin: 24px auto; background: #fff; border: 6px solid var(--red); border-radius: 28px; padding: 32px 28px; display: grid; gap: 22px; }
+  .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; font-size: 20px; }
+  .brand img { width: 44px; height: 44px; border-radius: 10px; }
+  .rule { text-align: center; background: var(--red-soft); border-radius: 20px; padding: 22px 12px; }
+  .light { display: inline-flex; gap: 10px; padding: 10px 14px; background: #111827; border-radius: 999px; margin-bottom: 10px; }
+  .light i { width: 26px; height: 26px; border-radius: 50%; background: #374151; }
+  .light i.on { background: #22c55e; box-shadow: 0 0 16px #22c55e; }
+  .rule strong { display: block; color: var(--red); font-size: clamp(34px, 8vw, 60px); line-height: 1.15; letter-spacing: 1px; }
+  .rule span { color: var(--muted); font-weight: 600; }
+  h2 { margin: 0 0 8px; font-size: 22px; }
+  ol { margin: 0; padding-left: 1.4em; display: grid; gap: 6px; font-size: 20px; font-weight: 600; }
+  ol b.g { color: var(--green); }
+  ol b.r { color: var(--red); }
+  ul.flags { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+  ul.flags li { padding: 10px 14px; border-radius: 14px; border: 2px solid var(--red); color: var(--red); font-weight: 700; font-size: 19px; }
+  .phones { display: grid; gap: 14px; }
+  .phones div { display: flex; gap: 10px; align-items: flex-end; font-weight: 700; }
+  .phones div span { flex: 1; border-bottom: 2px solid var(--ink); height: 28px; }
+  .hotline { text-align: center; font-weight: 800; font-size: 20px; }
+  .hotline small { display: block; font-weight: 500; color: var(--muted); font-size: 15px; }
+  .hidden { display: none; }
+  @media print {
+    @page { size: A4; margin: 10mm; }
+    body { background: #fff; font-size: 16px; }
+    .bar { display: none; }
+    /* One A4 page per language. */
+    .card { width: 100%; margin: 0; border-width: 5px; border-radius: 22px; padding: 18px 22px; gap: 12px; break-after: page; break-inside: avoid; }
+    .card:last-of-type { break-after: auto; }
+    .brand { font-size: 17px; }
+    .brand img { width: 34px; height: 34px; }
+    .rule { padding: 12px; }
+    .rule strong { font-size: 54px; }
+    .light { margin-bottom: 4px; padding: 7px 12px; }
+    .light i { width: 20px; height: 20px; }
+    .light i.on { box-shadow: none; }
+    h2 { font-size: 18px; margin-bottom: 6px; }
+    ol { font-size: 17px; gap: 2px; }
+    ul.flags { grid-template-columns: 1fr 1fr; gap: 6px; }
+    ul.flags li { font-size: 15px; padding: 7px 10px; border-radius: 10px; }
+    .phones { gap: 8px; }
+    .hotline { font-size: 17px; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+<nav class="bar">
+  <a href="#zh-HK">廣東話</a>
+  <a href="#en">English</a>
+  <button type="button" onclick="window.print()">列印 Print</button>
+</nav>
+
+<section class="card" id="zh-HK" lang="zh-HK">
+  <div class="brand"><img src="assets/icon.png" alt="">係咪你 · 貼喺雪櫃</div>
+  <div class="rule">
+    <div class="light" aria-hidden="true"><i></i><i></i><i class="on"></i></div>
+    <strong>未見綠燈，<br>唔轉錢。</strong>
+    <span>有人自稱屋企人要錢？一定先驗證。</span>
+  </div>
+  <div>
+    <h2>點做</h2>
+    <ol>
+      <li>唔好即刻答應，唔好過錢。</li>
+      <li>打開「係咪你」，撳大掣，揀佢個名。</li>
+      <li>見到<b class="g">綠色</b>先好信。</li>
+      <li><b class="r">紅色</b>或者冇回覆 = 當係騙徒，收線。</li>
+    </ol>
+  </div>
+  <div>
+    <h2>聽到呢啲，一定係騙徒</h2>
+    <ul class="flags">
+      <li>「我換咗新號碼」「部手機壞咗」</li>
+      <li>「唔好話畀其他人知」</li>
+      <li>「好急，而家就要錢」</li>
+      <li>叫你過數去另一個人或公司戶口</li>
+      <li>「唔使驗證」「個 App 有問題」</li>
+    </ul>
+  </div>
+  <div class="phones">
+    <h2>屋企人平時嘅電話</h2>
+    <div>名：<span></span></div>
+    <div>名：<span></span></div>
+    <div>名：<span></span></div>
+  </div>
+  <div class="hotline">香港防騙易熱線 18222<small>isthatyou.lcdev.hk</small></div>
+</section>
+
+<section class="card" id="en" lang="en">
+  <div class="brand"><img src="assets/icon.png" alt="">IsThatYou · for the fridge</div>
+  <div class="rule">
+    <div class="light" aria-hidden="true"><i></i><i></i><i class="on"></i></div>
+    <strong>No green,<br>no money.</strong>
+    <span>Someone says they're family and needs money? Check first.</span>
+  </div>
+  <div>
+    <h2>What to do</h2>
+    <ol>
+      <li>Don't agree to anything. Don't send money.</li>
+      <li>Open IsThatYou, tap the big button, pick their name.</li>
+      <li>Only trust it when you see <b class="g">green</b>.</li>
+      <li><b class="r">Red</b> or no answer = treat it as a scam. Hang up.</li>
+    </ol>
+  </div>
+  <div>
+    <h2>If you hear these, it's a scam</h2>
+    <ul class="flags">
+      <li>"I've got a new number" / "My phone is broken"</li>
+      <li>"Don't tell anyone else"</li>
+      <li>"It's urgent, I need money now"</li>
+      <li>Asks you to pay someone else's or a company's account</li>
+      <li>"No need to check" / "That app is broken"</li>
+    </ul>
+  </div>
+  <div class="phones">
+    <h2>Family's usual numbers</h2>
+    <div>Name: <span></span></div>
+    <div>Name: <span></span></div>
+    <div>Name: <span></span></div>
+  </div>
+  <div class="hotline">Hong Kong Anti-Scam Helpline 18222<small>isthatyou.lcdev.hk</small></div>
+</section>
+
+<script>
+  // #zh-HK or #en shows (and prints) just that card; no hash shows both.
+  function pick() {
+    var lang = location.hash.slice(1);
+    var known = lang === "zh-HK" || lang === "en";
+    document.querySelectorAll(".card").forEach(function (card) {
+      card.classList.toggle("hidden", known && card.id !== lang);
+    });
+    if (lang === "en") document.documentElement.lang = "en";
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", pick);
+  pick();
+</script>
+</body>
+</html>
