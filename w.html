@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>⚠️ 盜號警告 Hijack warning · 係咪你 IsThatYou</title>
+<meta name="description" content="打開睇最新狀態：唔好過錢、唔好轉發驗證碼。Open for the live status: don't send money or forward codes.">
+<meta property="og:title" content="⚠️ 盜號警告 · Hijack warning">
+<meta property="og:description" content="佢個 WhatsApp／電話被盜用。唔好過錢、唔好轉發驗證碼。 · Their WhatsApp/phone was hijacked. Don't send money or forward codes.">
+<meta property="og:image" content="https://isthatyou.lcdev.hk/assets/icon.png">
+<link rel="icon" href="assets/favicon.png">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .status { border-radius: 24px; padding: 24px 20px; margin-bottom: 20px; border: 3px solid var(--border); background: var(--card); }
+  .status.alert { border-color: #c81e1e; background: #fdecec; color: #7f1d1d; }
+  .status.ok { border-color: #15803d; background: #e6f6ec; color: #14532d; }
+  .status h1 { font-size: 26px; margin: 8px 0 6px; color: inherit; }
+  .status p, .status li { color: inherit; }
+  .status .when { font-weight: 600; opacity: .85; }
+  .status ul { padding-left: 1.2em; margin: 10px 0; }
+  .status li { font-weight: 700; margin: 4px 0; }
+  .icon { font-size: 40px; line-height: 1; }
+  .lang { font-size: 15px; opacity: .9; border-top: 1px solid rgba(0,0,0,.12); margin-top: 16px; padding-top: 12px; }
+  @media (prefers-color-scheme: dark) {
+    .status.alert { background: #2d1414; color: #fecaca; border-color: #f87171; }
+    .status.ok { background: #0f2a1a; color: #bbf7d0; border-color: #4ade80; }
+    .lang { border-top-color: rgba(255,255,255,.15); }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <img src="assets/icon.png" alt="">
+    <a href="./">係咪你 IsThatYou</a>
+  </header>
+
+  <section id="status" class="status" aria-live="polite">
+    <p>載入緊… · Loading…</p>
+  </section>
+
+  <section class="doc">
+    <h2 style="margin-top:0">收到佢嘅訊息點算？ · Got a message from them?</h2>
+    <ol>
+      <li>唔好過錢、唔好買禮品卡。 · Don't send money or buy gift cards.</li>
+      <li>唔好轉發或者讀出任何你收到嘅驗證碼 — 你自己個 WhatsApp 會被盜。 · Never forward or read out a code you received — your own WhatsApp would be stolen next.</li>
+      <li>打佢平時嘅電話號碼確認。 · Call their usual phone number to check.</li>
+    </ol>
+    <p class="note">香港防騙易熱線 18222 · Hong Kong Anti-Scam Helpline 18222</p>
+  </section>
+
+  <div class="cards">
+    <a href="./"><strong>係咪你 IsThatYou</strong>家人一撳驗證：未見綠燈，唔轉錢。 · One-tap checks with family: no green, no money.</a>
+  </div>
+  <footer>© 2026 L&amp;C Development CO., Limited · 係咪你 IsThatYou</footer>
+</div>
+
+<script>
+  // The token lives in the #fragment, so it never reaches the web server's logs.
+  var API = "https://dztqvqobvcpmkvtmjezl.supabase.co/functions/v1/public-warning?t=";
+  var box = document.getElementById("status");
+
+  function when(iso, locale) {
+    try {
+      return new Intl.DateTimeFormat(locale, { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }).format(new Date(iso));
+    } catch (e) {
+      return iso;
+    }
+  }
+  function el(tag, text, cls) {
+    var node = document.createElement(tag);
+    if (text) node.textContent = text; // textContent only: the name is user-provided.
+    if (cls) node.className = cls;
+    return node;
+  }
+  function list(items) {
+    var ul = el("ul");
+    items.forEach(function (t) { ul.appendChild(el("li", t)); });
+    return ul;
+  }
+  function render(kind, parts) {
+    box.className = "status " + kind;
+    box.textContent = "";
+    parts.forEach(function (p) { box.appendChild(p); });
+  }
+
+  window.addEventListener("hashchange", function () { location.reload(); });
+  var token = decodeURIComponent(location.hash.slice(1));
+  if (!/^[A-Za-z0-9_-]{24}$/.test(token)) {
+    render("", [el("h1", "連結無效 · Invalid link"), el("p", "請叫發出警告嘅人再傳一次。 · Ask the sender to share it again.")]);
+  } else {
+    fetch(API + encodeURIComponent(token))
+      .then(function (res) { return res.json().then(function (body) { return { status: res.status, body: body }; }); })
+      .then(function (r) {
+        if (r.status === 404) {
+          render("", [el("h1", "搵唔到呢個警告 · Warning not found"), el("p", "連結可能打錯。 · The link may be mistyped.")]);
+          return;
+        }
+        if (r.status !== 200) throw new Error("status " + r.status);
+        var w = r.body;
+        var name = w.name;
+        if (w.active) {
+          var zh = el("div");
+          zh.appendChild(el("div", "⚠️", "icon"));
+          zh.appendChild(el("h1", name + " 嘅 WhatsApp／電話被盜用"));
+          zh.appendChild(el("p", "由 " + when(w.startedAt, "zh-HK") + " 開始，預計 " + when(w.endsAt, "zh-HK") + " 解除。", "when"));
+          zh.appendChild(el("p", "任何用 " + name + " 名義嘅以下要求，一律係騙徒："));
+          zh.appendChild(list(["借錢、叫你過數", "買禮品卡、點數卡", "叫你轉發或者讀出收到嘅驗證碼"]));
+          var en = el("div", null, "lang");
+          en.appendChild(el("p", name + "'s WhatsApp or phone has been hijacked (since " + when(w.startedAt, "en-GB") + "). Anyone using their name to ask for money, a transfer, gift cards, or a code you received is a scammer."));
+          render("alert", [zh, en]);
+        } else {
+          var done = el("div");
+          done.appendChild(el("div", "✅", "icon"));
+          done.appendChild(el("h1", name + " 已經解除盜號警告"));
+          done.appendChild(el("p", "已於 " + when(w.endedAt || w.endsAt, "zh-HK") + " 解除。仍然收到可疑訊息？打佢平時嘅電話確認。", "when"));
+          done.appendChild(el("p", name + " has ended the hijack warning (" + when(w.endedAt || w.endsAt, "en-GB") + "). Still getting odd messages? Call their usual number.", "lang"));
+          render("ok", [done]);
+        }
+      })
+      .catch(function () {
+        render("", [el("h1", "暫時載入唔到 · Couldn't load"), el("p", "請稍後再試。期間唔好過錢、唔好轉發驗證碼。 · Try again soon. Meanwhile, send no money and forward no codes.")]);
+      });
+  }
+</script>
+</body>
+</html>
