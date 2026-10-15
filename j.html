@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>家庭邀請 Family invite · 係咪你 IsThatYou</title>
+<meta property="og:title" content="係咪你 · 家庭邀請 Family invite">
+<meta property="og:description" content="打開 App，再打畀邀請人問 6 位確認碼。 · Open the app, then call the inviter for the 6-digit code.">
+<meta property="og:image" content="https://isthatyou.lcdev.hk/assets/icon.png">
+<link rel="icon" href="assets/favicon.png">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .invite { text-align: center; background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 32px 20px; margin-bottom: 20px; }
+  .invite img { width: 88px; height: 88px; border-radius: 20px; }
+  .btn { display: block; margin: 18px auto 0; max-width: 360px; padding: 16px; border-radius: 16px; font-weight: 700; font-size: 18px; text-decoration: none; }
+  .primary { background: #1E3A8A; color: #fff; }
+  .secondary { border: 1px solid var(--border); color: var(--brand); }
+  ol li { margin: 6px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="invite">
+    <img src="assets/icon.png" alt="">
+    <h1 style="margin-top:16px">你收到家庭邀請<br><span style="font-size:22px;color:var(--muted)">You've been invited to a family</span></h1>
+    <a id="open" class="btn primary" href="#">用「係咪你」打開 · Open in IsThatYou</a>
+    <a class="btn secondary" href="https://apps.apple.com/app/id6817613883">未有 App？下載 · Get the app</a>
+  </section>
+  <section class="doc">
+    <ol>
+      <li>裝好 App 之後，返嚟呢頁撳「打開」。 · After installing, come back and tap “Open”.</li>
+      <li>打畀邀請你嘅家人<strong>平時嘅電話號碼</strong>，問佢 6 位確認碼。 · Call the family member <strong>on their usual number</strong> for the 6-digit code.</li>
+      <li>輸入確認碼就完成。 · Enter the code and you're in.</li>
+    </ol>
+    <p class="note">唔認識邀請人，或者對方叫你打訊息入面嘅號碼？唔好加入。 · Don't know who invited you, or asked to call a number in the message? Don't join.</p>
+  </section>
+  <footer>© 2026 L&amp;C Development CO., Limited · 係咪你 IsThatYou</footer>
+</div>
+<script>
+  // Token stays in the #fragment (never sent to the web server).
+  var token = location.hash.slice(1);
+  var open = document.getElementById("open");
+  if (/^[0-9a-f]{32}$/i.test(token)) {
+    open.href = "isthatyou://join?t=" + token + "&r=1";
+  } else {
+    open.textContent = "連結無效 · Invalid link";
+    open.removeAttribute("href");
+  }
+</script>
+</body>
+</html>
